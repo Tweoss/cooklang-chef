@@ -277,11 +277,11 @@ fn make_template_env(locales: &LocaleStore) -> Environment<'static> {
     env
 }
 
-/// filters static files to only expose images and cook files
+/// filters static files to only expose images and cook files and html files
 async fn filter_files(req: Request, next: Next) -> impl axum::response::IntoResponse {
     let path = req.uri().path();
     let (_, ext) = path.rsplit_once('.').ok_or(StatusCode::NOT_FOUND)?;
-    if ext == "cook" || cooklang_fs::IMAGE_EXTENSIONS.contains(&ext) {
+    if ext == "html" || ext == "cook" || cooklang_fs::IMAGE_EXTENSIONS.contains(&ext) {
         Ok(next.run(req).await)
     } else {
         Err(StatusCode::NOT_FOUND)
