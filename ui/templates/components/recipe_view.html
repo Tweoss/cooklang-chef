@@ -124,7 +124,7 @@
   {% macro name_or_url(label, name, url, meta_entry) %}
     {% call meta_entry(label) %}
       {% if url %}
-        <a href="{{ url }}" class="link">
+        <a href="{{ url }}" class="link" target="_blank">
           {% if name %}
             {{ name }}
           {% else %}
