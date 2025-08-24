@@ -178,11 +178,17 @@
 
 {% if r.meta.other is not empty %}
   {% set entries %}
-    {% for key, value in r.meta.other|items %}
-      {% if key != "image" %}
-        {% call meta_entry(key) %}
-          {{ value }}
+    {% for item in r.meta.other %}
+      {% if item.value['unsafe'] == true %}
+        {% call meta_entry(item.key) %}
+          {{ item.value['html']|safe }}
         {% endcall %}
+      {% else %}
+        {% if item.key != "image" %}
+          {% call meta_entry(item.key) %}
+            {{ item.value }}
+          {% endcall %}
+        {% endif %}
       {% endif %}
     {% endfor %}
   {% endset %}

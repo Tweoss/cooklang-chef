@@ -251,8 +251,14 @@ fn make_recipe_context(r: ScaledRecipe, converter: &Converter, config: &Config) 
                     "name" | "title" | "description" | "tags" | "emoji" |  "author" | "source" | "time" | "prep time" | "cook time" | "servings" => return None,
                     _ => {}
                 }
-                let value = value.as_str_like()?;
-                Some((key, value))
+                if value.get("unsafe") == Some(&serde_yaml::Value::Bool(true)) {
+                    return Some(context! {key, value});
+                }
+                let value = value.as_str_like().or_else(|| {
+                    // Print a yaml string if value is not a plain string.
+                    serde_yaml::to_string(value).map(|s| s.trim().to_owned().into()).ok()
+                });
+                value.map(|value| context! {key, value})
             }))
         },
         grouped_ingredients,
