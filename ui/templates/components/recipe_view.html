@@ -286,32 +286,35 @@
     {% if r.grouped_ingredients is not empty %}
       <div>
         <h2 class="my-2 font-heading text-3xl">{{ t("r.ingredients") }}</h2>
-        <ul class="ms-6 list-disc">
+        <ul class="ms-6 list-disc" style="list-style-type:none;">
           {% for e in r.grouped_ingredients %}
             {% set ingredient = r.ingredients[e.index] %}
             {% if 'HIDDEN' not in ingredient.modifiers %}
               <li class="w-fit">
+                <input type="checkbox" id="ingredient check {{ e.index }}">
                 {% set display_name = ingredient.display_name|capitalize %}
                 <span
                   data-component-kind="ingredient"
                   data-component-ref-group="{{ e.index }}"
                   data-component-ref-target="ingredient"
                 >
-                  {% if 'RECIPE' in ingredient.modifiers %}
-                    {% set ref_href = recipe_refs[ingredient.name] %}
-                    <a
-                      href="{{ ref_href|default('#') }}"
-                      {% if ref_href %}
-                        class="link underline"
-                      {% else %}
-                        class="text-red-11 underline decoration-wavy"
-                      {% endif %}
-                    >
-                      {{ display_name }}
-                    </a>
-                  {%- else -%}
-                    {{- display_name -}}
-                  {%- endif -%}
+                  <label for="ingredient check {{ e.index }}">
+                    {% if 'RECIPE' in ingredient.modifiers %}
+                      {% set ref_href = recipe_refs[ingredient.name] %}
+                      <a
+                        href="{{ ref_href|default('#') }}"
+                        {% if ref_href %}
+                          class="link underline"
+                        {% else %}
+                          class="text-red-11 underline decoration-wavy"
+                        {% endif %}
+                      >
+                        {{ display_name }}
+                      </a>
+                    {%- else -%}
+                      {{- display_name -}}
+                    {%- endif -%}
+                  </label>
                 </span>
                 {%- if 'OPT' in ingredient.modifiers -%}
                   <span> ({{ t("r.optMarker") }})</span>
@@ -355,17 +358,20 @@
     {% if r.grouped_cookware is not empty %}
       <div>
         <h2 class="my-2 font-heading text-3xl">{{ t("r.cookware") }}</h2>
-        <ul class="ms-6 list-disc">
+        <ul class="ms-6 list-disc" style="list-style-type:none;">
           {% for e in r.grouped_cookware %}
             {% set item = r.cookware[e.index] %}
             {% if 'HIDDEN' not in item.modifiers %}
               <li class="w-fit">
+                <input type="checkbox" id="cookware check {{ e.index }}">
                 <span
                   data-component-kind="cookware"
                   data-component-ref-group="{{ e.index }}"
                   data-component-ref-target="cookware"
                 >
-                  {{- item.display_name|capitalize -}}
+                  <label for="cookware check {{ e.index}}">
+                    {{- item.display_name|capitalize -}}
+                  </label>
                 </span>
 
                 {%- if 'OPT' in item.modifiers -%}
