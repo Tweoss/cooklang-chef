@@ -297,6 +297,7 @@
                   data-component-kind="ingredient"
                   data-component-ref-group="{{ e.index }}"
                   data-component-ref-target="ingredient"
+                  id="ingredient label {{ e.index }}"
                 >
                   <label for="ingredient check {{ e.index }}">
                     {% if 'RECIPE' in ingredient.modifiers %}
@@ -474,13 +475,21 @@
                       {{- item.value -}}
                     {%- elif item.type == "ingredient" -%}
                       {% set igr = r.ingredients[item.index] %}
+                      {% set ref_target = igr.references_to.target|default('ingredient') %}
+                      {% set ref_group = item.index if 'REF' not in igr.modifiers else igr.references_to.index %}
                       <span
                         class="font-semibold text-green-11"
                         data-component-kind="ingredient"
-                        data-component-ref-group="{{ item.index if 'REF' not in igr.modifiers else igr.references_to.index }}"
-                        data-component-ref-target="{{ igr.references_to.target|default('ingredient') }}"
+                        data-component-ref-group="{{ ref_group }}"
+                        data-component-ref-target="{{ ref_target }}"
                       >
-                        {{- igr.display_name -}}
+                        {% if ref_target == "ingredient" %}
+                          <a href="#ingredient label {{ ref_group }}">
+                            {{- igr.display_name -}}
+                          </a>
+                        {% else %}
+                            {{- igr.display_name -}}
+                        {% endif %}
                         {%- if igr_extra[item.index].subscript -%}
                           <sub>{{ igr_extra[item.index].subscript }}</sub>
                         {%- endif -%}
