@@ -484,10 +484,8 @@
                         data-component-ref-target="{{ ref_target }}"
                       >
                         {% if ref_target == "ingredient" %}
-                          <a href="#ingredient label {{ ref_group }}">
-                            {{- igr.display_name -}}
-                          </a>
-                        {% else %}
+                          <!-- smush the else onto this line to avoid extra space -->
+                          <a href="#ingredient label {{ ref_group }}">{{- igr.display_name -}}</a>{% else %}
                             {{- igr.display_name -}}
                         {% endif %}
                         {%- if igr_extra[item.index].subscript -%}
@@ -525,8 +523,8 @@
                             {{- qty_format(tm.quantity, editable=false) -}}
                           {% endif %}
                           {{- "(" ~ tm.name ~ ")" if tm.name is not none -}}
-                        </button>
-                      {% endif %}
+                          <!-- smush the endif onto this line to avoid extra space -->
+                        </button>{% endif %}
                     {%- elif item.type == "inlineQuantity" -%}
                       {% set qty = r.inline_quantities[item.index] %}
                       {% set color = "text-red-11" if r.inline_is_temp[item.index] else "" %}
